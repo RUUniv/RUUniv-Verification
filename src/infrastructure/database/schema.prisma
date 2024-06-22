@@ -11,7 +11,7 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
-  passwor   String
+  password  String
   updatedAt DateTime @default(now()) @map("updated_at")
   apiKeys   ApiKey[]
 

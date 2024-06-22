@@ -5,6 +5,7 @@ import { DatabaseService } from './infrastructure/database/database.service';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { ConfigModule } from '@nestjs/config';
 
+
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -13,6 +14,6 @@ import { ConfigModule } from '@nestjs/config';
         }),
         AppModule,
         InfrastructureModule,
-    ]
+    ],
 })
 export class MainModule {}
