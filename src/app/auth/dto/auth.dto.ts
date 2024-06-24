@@ -1,5 +1,5 @@
 import { Options } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 /**
@@ -10,9 +10,11 @@ export class SignUpRequest{
 
     @IsNotEmpty()
     @IsEmail()
+    @ApiProperty({ description: '이메일', example: 'univ@gmail.com' })
     email: string;
 
     @IsNotEmpty()
+    @ApiProperty({ description: '비밀번호', example: 'asdf1234' })
     password: string;
 
 }
@@ -20,9 +22,11 @@ export class SignUpRequest{
 export class SignInRequest{
     @IsNotEmpty()
     @IsEmail()
+    @ApiProperty({ description: '이메일', example: 'univ@gmail.com' })
     email: string;
 
     @IsNotEmpty()
+    @ApiProperty({ description: '비밀번호', example: 'asdf1234' })
     password: string;
 }
 

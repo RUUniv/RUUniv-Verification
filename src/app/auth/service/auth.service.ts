@@ -23,7 +23,7 @@ export class AuthService {
         const user = await this.databaseService.user.create({
             data: {
                 email: data.email,
-                password: hashedPassword
+                password: hashedPassword,
             }
         })
         
@@ -47,7 +47,7 @@ export class AuthService {
         if (!bcrypt.compareSync(data.password, user.password)) { 
             throw new Error()
         }
-
+        
         const [accessToken, refreshToken] = await this.reissueToken(user)
 
         return {
