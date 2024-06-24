@@ -2,7 +2,9 @@ import { Options } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-
+/**
+ *  Request
+ */
 
 export class SignUpRequest{
 
@@ -14,3 +16,16 @@ export class SignUpRequest{
     password: string;
 
 }
+
+export class SignInRequest{
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
+
+    @IsNotEmpty()
+    password: string;
+}
+
+/**
+ * Response
+ */

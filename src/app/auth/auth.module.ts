@@ -3,10 +3,13 @@ import { AuthController } from './api/auth.v1.controller';
 import { AuthService } from './service/auth.service';
 import { APP_PIPE } from '@nestjs/core';
 import { DatabaseModule } from 'src/infrastructure/database/database.module';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule,
+    JwtModule.register({ global: true })
+  ],
   controllers: [AuthController],
   providers: [AuthService,],
   exports: [AuthService],

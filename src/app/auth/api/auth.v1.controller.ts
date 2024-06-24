@@ -15,7 +15,7 @@ export class AuthController {
         this.authService.signUp(body)
     }
 
-    @Get("/")
+    @Get("")
     signIn(): void {
         console.log("sss")
     }
