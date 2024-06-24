@@ -10,20 +10,23 @@ export class UserService {
         private readonly databaseService : DatabaseService
     ) { }
     
-    async createApiKey(userId: number): Promise<ApiKeyResponse> {
+    async createApiKey(userId: number): Promise<ApiKey> {
         const user = await this.databaseService.user.findUnique({ where: { id: userId } });
         
         const apiKey = await randomUUID();
 
-        await this.databaseService.apiKey.create({
+        return this.databaseService.apiKey.create({
             data: {
                 apiKey: apiKey,
                 userId: user.id
             }
         });
 
-        return {
-            apiKey: apiKey
-        }
     }
+
+    async getApiKeys(userId : number): Promise<ApiKey[]>{
+        return this.databaseService.apiKey.findMany({
+            where : {userId : userId}
+        })
+    } 
 }
