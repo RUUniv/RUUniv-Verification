@@ -3,7 +3,7 @@ import { AppModule } from './app/app.module';
 import { DatabaseModule } from './infrastructure/database/database.module';
 import { DatabaseService } from './infrastructure/database/database.service';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 
 @Module({
