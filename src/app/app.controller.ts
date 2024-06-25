@@ -1,11 +1,10 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller("app")
+@Controller('app')
 export class AppController {
-
   @Get()
   getHello(): string {
-    return "hello";
+    return 'hello';
   }
 }

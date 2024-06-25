@@ -24,6 +24,7 @@ async function bootstrap() {
     .enableVersioning({ type: VersioningType.URI })
     .useGlobalInterceptors(
       new ClassSerializerInterceptor(app.get(Reflector)),
+
     )
     .useGlobalPipes(
       new ValidationPipe(),

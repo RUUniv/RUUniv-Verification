@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, HttpException, HttpStatus, InternalServerErrorException, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../service/user.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -66,11 +66,13 @@ export class UserController {
     @ApiOkResponse({type : ApiKeyResponse})
     async deleteApiKey(@Req() req : any, @Param("id") apiKeyId : bigint) {
         try {
-            this.userService.deleteApiKey(req.user.userId, apiKeyId)
-        } catch (error) {
-            throw new Error("Api Key Not Found")
-        }
-        
+            await this.userService.deleteApiKey(req.user.userId, apiKeyId)
+        } catch (e) {
+            if (e instanceof Error) {
+                console.log("asd")
+                throw new HttpException("asd",HttpStatus.BAD_REQUEST)
+            }
+        }        
     }
 
     @Get("/test")
