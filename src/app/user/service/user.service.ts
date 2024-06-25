@@ -10,8 +10,8 @@ export class UserService {
         private readonly databaseService : DatabaseService
     ) { }
     
-    async createApiKey(userId: number): Promise<ApiKey> {
-        const user = await this.databaseService.user.findUnique({ where: { id: userId } });
+    async createApiKey(userId: bigint): Promise<ApiKey> {
+        const user = await this.databaseService.user.findFirst({ where: { id: userId } });
         
         const apiKey = await randomUUID();
 
@@ -24,9 +24,23 @@ export class UserService {
 
     }
 
-    async getApiKeys(userId : number): Promise<ApiKey[]>{
+    async getApiKeys(userId : bigint): Promise<ApiKey[]>{
         return this.databaseService.apiKey.findMany({
-            where : {userId : userId}
-        })
+            where: { userId: userId }
+        });
     } 
+
+    async deleteApiKey(userId: bigint, apiKeyId: bigint) {
+        const apiKey = await this.databaseService.apiKey.findUnique({
+            where : {id : apiKeyId , userId}
+        })
+        
+        if (apiKey == null) {
+            throw new Error("Api Key Not Found")
+        }
+
+        await this.databaseService.apiKey.delete({
+            where: { id: apiKey.id, userId : apiKey.userId }
+        });
+    }
 }

@@ -21,7 +21,7 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     @Post("/signUp")
     @ApiOkResponse({ type : TokenResponse })
-    signUp(@Body() body :SignUpRequest): Promise<TokenResponse>{
+    async signUp(@Body() body :SignUpRequest): Promise<TokenResponse>{
         return this.authService.signUp(body);
     }
 
@@ -33,13 +33,13 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     @Post("/signIn")
     @ApiOkResponse({ type : TokenResponse })
-    signIn(@Body() body :SignInRequest): Promise<TokenResponse> {
+    async signIn(@Body() body :SignInRequest): Promise<TokenResponse> {
         return this.authService.signIn(body);
     }
 
     @Get("")
     @UseGuards(AuthGuard("jwt"))
-    test(@Req() req : any) {
+    async test(@Req() req : any) {
         console.log(req.user.userId)
         return "11"
     }

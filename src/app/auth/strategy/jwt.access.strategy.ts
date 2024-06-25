@@ -4,6 +4,9 @@ import { ConfigService } from "@nestjs/config";
 import { Injectable } from "@nestjs/common";
 import { Request } from "express";
 
+
+
+
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy,'jwt') {
     //NestJS Docs
@@ -22,6 +25,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy,'jwt') {
     
     validate(req: Request, payload) {
         req.user = payload.id
+
         return payload
     }
 }
