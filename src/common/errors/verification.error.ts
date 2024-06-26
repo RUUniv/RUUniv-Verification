@@ -24,6 +24,11 @@ export class DuplicatedVerificationError extends Error {
   }
 }
 
+export class NotSupportedUniversityError extends Error {
+  constructor() {
+    super('NOT_SUPPORTED_UNIVERSITY');
+  }
+}
 /**
  * HTTP EXCEPTION
  */
@@ -49,5 +54,11 @@ export class InvalidAuthCodeException extends NotFoundException {
 export class DuplicatedVerificationException extends HttpException {
   constructor() {
     super('DUPLICATE_VERIFICATION', HttpStatus.BAD_REQUEST);
+  }
+}
+
+export class NotSupportedUniversityException extends HttpException {
+  constructor() {
+    super('NOT_SUPPORTED_UNIVERSITY', HttpStatus.BAD_REQUEST);
   }
 }

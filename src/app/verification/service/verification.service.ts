@@ -9,6 +9,7 @@ import {
 import {
   AuthCodeNotFoundError,
   DuplicatedVerificationError,
+  NotSupportedUniversityError,
   UniversityNotFoundError,
 } from 'src/common/errors/verification.error';
 import { EmailService } from './email.service';
@@ -82,6 +83,23 @@ export class VerificationService {
     await this.dataBaseService.student.deleteMany({
       where: { apiKeyId: apiKeyId },
     });
+
+    return true;
+  }
+
+  async getAllSupportedUniversity(): Promise<string[]> {
+    return Object.values(University).map((unibersity) => unibersity.name);
+  }
+
+  async checkSupportedUniversity(universityName: string): Promise<boolean> {
+    const check = Object.values(University).some(
+      (university) =>
+        university.name && universityName.includes(university.name),
+    );
+
+    if (!check) {
+      throw new NotSupportedUniversityError();
+    }
 
     return true;
   }

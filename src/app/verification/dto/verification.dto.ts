@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+/**
+ * Response
+ */
+
 export class StudentReponse {
   constructor(data: StudentReponse) {
     this.id = data.id;
@@ -24,4 +28,35 @@ export class StudentReponse {
     example: '서울시립대학교',
   })
   universityName: string;
+}
+
+export class DeleteStudentsResponse {
+  constructor(data: DeleteStudentsResponse) {
+    this.isDelete = data.isDelete;
+  }
+
+  @ApiProperty({
+    description: '삭제 인증 상태',
+    example: 'true',
+  })
+  isDelete: boolean;
+}
+
+export class SupportedUniversityResponse {
+  constructor(data: SupportedUniversityResponse) {
+    this.universityName = data.universityName;
+    this.isSupported = data.isSupported;
+  }
+
+  @ApiProperty({
+    description: '대학명',
+    example: '서울시립대학교',
+  })
+  universityName: string;
+
+  @ApiProperty({
+    description: '대학 지원 여부',
+    example: 'true',
+  })
+  isSupported: boolean;
 }

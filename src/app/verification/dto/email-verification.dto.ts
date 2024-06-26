@@ -51,8 +51,8 @@ export class VerifyEmailRequest {
 export class EmailVerificationResponse {
   constructor(data: EmailVerificationResponse) {
     this.email = data.email;
-    this.university = data.university;
-    this.status = data.status;
+    this.universityName = data.universityName;
+    this.isSend = data.isSend;
   }
 
   @ApiProperty({
@@ -65,20 +65,20 @@ export class EmailVerificationResponse {
     description: '대학명',
     example: '서울시립대학교',
   })
-  university: string;
+  universityName: string;
 
   @ApiProperty({
-    description: '메일 인증 상태',
+    description: '메일 발송 여부',
     example: 'true',
   })
-  status: boolean;
+  isSend: boolean;
 }
 
 export class VerifyEmailResponse {
   constructor(data: VerifyEmailResponse) {
     this.email = data.email;
-    this.university = data.university;
-    this.status = data.status;
+    this.universityName = data.universityName;
+    this.isVerify = data.isVerify;
   }
 
   @ApiProperty({
@@ -91,23 +91,11 @@ export class VerifyEmailResponse {
     description: '대학명',
     example: '서울시립대학교',
   })
-  university: string;
+  universityName: string;
 
   @ApiProperty({
     description: '인증 완료 여부',
     example: 'true',
   })
-  status: boolean;
-}
-
-export class DeleteStudentsResponse {
-  constructor(data: DeleteStudentsResponse) {
-    this.status = data.status;
-  }
-
-  @ApiProperty({
-    description: '삭제 인증 상태',
-    example: 'true',
-  })
-  status: boolean;
+  isVerify: boolean;
 }

@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -13,7 +15,6 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { VerificationService } from '../service/verification.service';
 import { ApiKeyAuthGuard } from 'src/app/auth/guard/apiKey.guard';
 import {
-  DeleteStudentsResponse,
   EmailVerificationRequest,
   VerifyEmailRequest,
   VerifyEmailResponse,
@@ -25,11 +26,14 @@ import {
   DuplicatedVerificationException,
   InvalidAuthCodeError,
   InvalidAuthCodeException,
+  NotSupportedUniversityError,
+  NotSupportedUniversityException,
   UniversityNotFoundError,
   UniversityNotFoundException,
 } from 'src/common/errors/verification.error';
-import { StudentReponse } from '../dto/verification.dto';
+import { DeleteStudentsResponse } from '../dto/verification.dto';
 import { EmailVerificationResponse } from '../dto/email-verification.dto';
+import { SupportedUniversityResponse } from '../dto/verification.dto';
 
 @ApiTags('검증')
 @Controller({ path: 'verification', version: '1' })
@@ -54,8 +58,8 @@ export class VerificationController {
 
       return new EmailVerificationResponse({
         email: body.email,
-        university: body.universityName,
-        status: response,
+        universityName: body.universityName,
+        isSend: response,
       });
     } catch (e) {
       if (e instanceof UniversityNotFoundError) {
@@ -85,8 +89,8 @@ export class VerificationController {
 
       return new VerifyEmailResponse({
         email: response.email,
-        university: response.universityName,
-        status: true,
+        universityName: response.universityName,
+        isVerify: true,
       });
     } catch (e) {
       if (e instanceof AuthCodeNotFoundError) {
@@ -122,7 +126,48 @@ export class VerificationController {
     );
 
     return new DeleteStudentsResponse({
-      status: response,
+      isDelete: response,
     });
+  }
+
+  @Get('')
+  @ApiOperation({
+    operationId: '인증을 지원하는 대학 전체 목록 조회',
+    summary: '인증을 지원하는 대학 목록 전체 조회',
+    description: '인증을 지원하는 대학 목록 전체 조회를 요청합니다.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(ApiKeyAuthGuard)
+  @ApiOkResponse({ type: SupportedUniversityResponse })
+  async getAllSupportedUniversity(): Promise<string[]> {
+    return this.verificationService.getAllSupportedUniversity();
+  }
+
+  @Get(':university')
+  @ApiOperation({
+    operationId: '해당 대학이 지원되는지 조회',
+    summary: '해당 대학이 지원되는지 조회',
+    description: '해당 대학이 지원되는지 확인합니다.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(ApiKeyAuthGuard)
+  @ApiOkResponse({ type: SupportedUniversityResponse })
+  async checkSupportedUniversity(
+    @Req() req: any,
+    @Param('university') universityName: string,
+  ): Promise<SupportedUniversityResponse> {
+    try {
+      const response =
+        await this.verificationService.checkSupportedUniversity(universityName);
+
+      return new SupportedUniversityResponse({
+        isSupported: response,
+        universityName: universityName,
+      });
+    } catch (e) {
+      if (e instanceof NotSupportedUniversityError) {
+        throw new NotSupportedUniversityException();
+      }
+    }
   }
 }
