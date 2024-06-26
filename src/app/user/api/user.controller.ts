@@ -9,7 +9,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserService } from '../service/user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiKeyResponse } from '../dto/apiKey.dto';
@@ -20,6 +25,7 @@ import {
 } from 'src/common/errors/apiKey.error';
 
 @ApiTags('유저')
+@ApiBearerAuth('Authorization')
 @Controller({ path: 'users', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}

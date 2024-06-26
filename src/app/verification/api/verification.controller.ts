@@ -11,7 +11,13 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { VerificationService } from '../service/verification.service';
 import { ApiKeyAuthGuard } from 'src/app/auth/guard/apiKey.guard';
 import {
@@ -36,6 +42,7 @@ import { EmailVerificationResponse } from '../dto/email-verification.dto';
 import { SupportedUniversityResponse } from '../dto/verification.dto';
 
 @ApiTags('검증')
+@ApiBasicAuth('ApiKey')
 @Controller({ path: 'verification', version: '1' })
 export class VerificationController {
   constructor(private readonly verificationService: VerificationService) {}

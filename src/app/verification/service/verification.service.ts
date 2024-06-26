@@ -15,7 +15,6 @@ import {
 import { EmailService } from './email.service';
 import { InvalidAuthCodeError } from '../../../common/errors/verification.error';
 import { Student } from '@prisma/client';
-import { promises } from 'dns';
 
 @Injectable()
 export class VerificationService {

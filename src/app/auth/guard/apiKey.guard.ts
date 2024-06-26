@@ -15,6 +15,7 @@ export class ApiKeyAuthGuard implements CanActivate {
     const header = await context.switchToHttp().getRequest().headers.apikey;
 
     if (header == null) {
+      console.log(request);
       throw new NullApiKeyException();
     }
 
