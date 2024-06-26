@@ -6,11 +6,11 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import { TokenResponse } from '../dto/token.dto';
+import { UserNotFoundError } from 'src/common/errors/user.error';
 import {
   DuplicatedEmailError,
-  NoUserError,
-} from 'src/common/errors/user.error';
-import { InvalidPasswordError } from 'src/common/errors/auth.error';
+  InvalidPasswordError,
+} from 'src/common/errors/auth.error';
 
 @Injectable()
 export class AuthService {
@@ -48,7 +48,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NoUserError();
+      throw new UserNotFoundError();
     }
 
     if (!bcrypt.compareSync(data.password, user.password)) {

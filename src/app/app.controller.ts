@@ -1,5 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('app')
 export class AppController {

@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Logger,
   Post,
   Req,
   UseGuards,
@@ -15,16 +16,15 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { TokenResponse } from '../dto/token.dto';
 import {
-  DuplicatedEmailError,
-  NoUserError,
+  UserNotFoundError,
   UserNotFoundException,
 } from 'src/common/errors/user.error';
 import {
+  DuplicatedEmailError,
   DuplicatedEmailException,
   InvalidPasswordError,
   InvalidPasswordException,
 } from 'src/common/errors/auth.error';
-
 @ApiTags('인증')
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
@@ -40,7 +40,7 @@ export class AuthController {
   @ApiOkResponse({ type: TokenResponse })
   async signUp(@Body() body: SignUpRequest): Promise<TokenResponse> {
     try {
-      return this.authService.signUp(body);
+      return await this.authService.signUp(body);
     } catch (e) {
       if (e instanceof DuplicatedEmailError) {
         throw new DuplicatedEmailException();
@@ -60,9 +60,9 @@ export class AuthController {
   @ApiOkResponse({ type: TokenResponse })
   async signIn(@Body() body: SignInRequest): Promise<TokenResponse> {
     try {
-      return this.authService.signIn(body);
+      return await this.authService.signIn(body);
     } catch (e) {
-      if (e instanceof NoUserError) {
+      if (e instanceof UserNotFoundError) {
         throw new UserNotFoundException();
       }
 

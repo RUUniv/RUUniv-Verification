@@ -11,18 +11,19 @@ export class InvalidPasswordError extends Error {
   }
 }
 
-// ===================================================================
-// HTTP Exceptions
-// ===================================================================
-export class TooManyPhoneAuthRequestsException extends HttpException {
+export class DuplicatedEmailError extends Error {
   constructor() {
-    super('TOO_MANY_PHONE_OTP_REQUEST', HttpStatus.TOO_MANY_REQUESTS);
+    super('DUPLICATED_EMAIL');
   }
 }
 
-export class DuplicatedEmailException extends ConflictException {
+// ===================================================================
+// HTTP Exceptions
+// ===================================================================
+
+export class DuplicatedEmailException extends HttpException {
   constructor() {
-    super('DUPLICATED_EMAIL');
+    super('DUPLICATED_EMAIL', HttpStatus.BAD_REQUEST);
   }
 }
 

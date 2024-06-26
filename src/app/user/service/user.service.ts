@@ -2,7 +2,7 @@ import { ApiKey } from './../../../../node_modules/.prisma/client/index.d';
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { DatabaseService } from 'src/infrastructure/database/database.service';
-import { NoApiKeyError } from 'src/common/errors/apiKey.error';
+import { ApiKeyNotFoundError } from 'src/common/errors/apiKey.error';
 
 @Injectable()
 export class UserService {
@@ -31,7 +31,7 @@ export class UserService {
     });
 
     if (apiKey == null) {
-      throw new NoApiKeyError();
+      throw new ApiKeyNotFoundError();
     }
 
     await this.databaseService.apiKey.delete({

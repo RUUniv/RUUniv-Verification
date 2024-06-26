@@ -1,27 +1,24 @@
-import { ApiKey } from './../../../../node_modules/.prisma/client/index.d';
+import { ApiProperty } from '@nestjs/swagger';
+
 /**
  *  Response
  */
 
-import { ApiProperty } from "@nestjs/swagger";
+export class ApiKeyResponse {
+  constructor(data: ApiKeyResponse) {
+    this.apiKey = data.apiKey;
+    this.id = data.id;
+  }
 
-export class ApiKeyResponse{
+  @ApiProperty({
+    description: 'Api Key Id',
+    example: '1',
+  })
+  id: bigint;
 
-    constructor(data: ApiKeyResponse) {
-        this.apiKey = data.apiKey
-        this.id = data.id
-    }
-
-    @ApiProperty({
-        description: 'Api Key Id',
-        example: '1',
-    })
-    id : bigint
-
-    @ApiProperty({
-        description: '인증용 apiKey',
-        example: 'asd-asd...',
-    })
-    apiKey : string
-
+  @ApiProperty({
+    description: '인증용 apiKey',
+    example: 'asd-asd...',
+  })
+  apiKey: string;
 }
