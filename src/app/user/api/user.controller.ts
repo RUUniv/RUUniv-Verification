@@ -18,14 +18,13 @@ import {
 import { UserService } from '../service/user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiKeyResponse } from '../dto/apiKey.dto';
-import { ApiKeyAuthGuard } from 'src/app/auth/guard/apiKey.guard';
 import {
   ApiKeyNotFoundError,
   ApiKeyNotFoundException,
 } from 'src/common/errors/apiKey.error';
 
 @ApiTags('유저')
-@ApiBearerAuth('Authorization')
+@ApiBearerAuth()
 @Controller({ path: 'users', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -40,7 +39,7 @@ export class UserController {
   @Post('/me/apiKey')
   @ApiOkResponse({ type: ApiKeyResponse })
   async createApiKey(@Req() req: any): Promise<ApiKeyResponse> {
-    const apiKey = await this.userService.createApiKey(req.user.id);
+    const apiKey = await this.userService.createApiKey(req.user.userId);
 
     return new ApiKeyResponse({
       apiKey: apiKey.apiKey,
@@ -49,9 +48,9 @@ export class UserController {
   }
 
   @ApiOperation({
-    operationId: 'API KEY 생성',
-    summary: 'API KEY 생성',
-    description: 'API KEY 생성을 요청합니다.',
+    operationId: 'API KEY 조회',
+    summary: 'API KEY 조회',
+    description: 'API KEY 조회를 요청합니다.',
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('jwt'))
@@ -83,16 +82,8 @@ export class UserController {
       await this.userService.deleteApiKey(req.user.userId, apiKeyId);
     } catch (e) {
       if (e instanceof ApiKeyNotFoundError) {
-        console.log('asd');
         throw new ApiKeyNotFoundException();
       }
     }
-  }
-
-  @Get('/test')
-  @UseGuards(ApiKeyAuthGuard)
-  async test(@Req() req: any) {
-    console.log(req.user);
-    return '123123';
   }
 }

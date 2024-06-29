@@ -103,6 +103,14 @@ export class VerificationService {
     return true;
   }
 
+  async getVerifiedStudents(apiKeyId: bigint): Promise<Student[]> {
+    return this.dataBaseService.student.findMany({
+      where: {
+        apiKeyId: apiKeyId,
+      },
+    });
+  }
+
   private async checkDuplicateVerification(email: string, apiKeyId: bigint) {
     const count = await this.dataBaseService.student.count({
       where: {

@@ -1,19 +1,14 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
-  Logger,
   Post,
-  Req,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
 import { SignInRequest, SignUpRequest } from '../dto/auth.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 import { TokenResponse } from '../dto/token.dto';
 import {
   UserNotFoundError,
@@ -72,12 +67,5 @@ export class AuthController {
 
       throw new InternalServerErrorException(e);
     }
-  }
-
-  @Get('')
-  @UseGuards(AuthGuard('jwt'))
-  async test(@Req() req: any) {
-    console.log(req.user.userId);
-    return '11';
   }
 }

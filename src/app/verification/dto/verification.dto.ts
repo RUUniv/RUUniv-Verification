@@ -4,8 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
  * Response
  */
 
-export class StudentReponse {
-  constructor(data: StudentReponse) {
+export class StudentResponse {
+  constructor(data: StudentResponse) {
     this.id = data.id;
     this.email = data.email;
     this.universityName = data.universityName;

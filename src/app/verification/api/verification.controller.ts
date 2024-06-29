@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import {
   ApiBasicAuth,
-  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -37,9 +36,14 @@ import {
   UniversityNotFoundError,
   UniversityNotFoundException,
 } from 'src/common/errors/verification.error';
-import { DeleteStudentsResponse } from '../dto/verification.dto';
+import {
+  DeleteStudentsResponse,
+  StudentResponse,
+} from '../dto/verification.dto';
 import { EmailVerificationResponse } from '../dto/email-verification.dto';
 import { SupportedUniversityResponse } from '../dto/verification.dto';
+import { Request } from 'express';
+import { User } from '@prisma/client';
 
 @ApiTags('검증')
 @ApiBasicAuth('ApiKey')
@@ -137,7 +141,7 @@ export class VerificationController {
     });
   }
 
-  @Get('')
+  @Get('/univ')
   @ApiOperation({
     operationId: '인증을 지원하는 대학 전체 목록 조회',
     summary: '인증을 지원하는 대학 목록 전체 조회',
@@ -150,7 +154,7 @@ export class VerificationController {
     return this.verificationService.getAllSupportedUniversity();
   }
 
-  @Get(':university')
+  @Get('/univ/:university')
   @ApiOperation({
     operationId: '해당 대학이 지원되는지 조회',
     summary: '해당 대학이 지원되는지 조회',
@@ -160,7 +164,6 @@ export class VerificationController {
   @UseGuards(ApiKeyAuthGuard)
   @ApiOkResponse({ type: SupportedUniversityResponse })
   async checkSupportedUniversity(
-    @Req() req: any,
     @Param('university') universityName: string,
   ): Promise<SupportedUniversityResponse> {
     try {
@@ -176,5 +179,29 @@ export class VerificationController {
         throw new NotSupportedUniversityException();
       }
     }
+  }
+
+  @Post('/student')
+  @ApiOperation({
+    operationId: '인증된 학생 조회',
+    summary: '인증된 학생 조회',
+    description: '인증된 학생 조회를 요청합니다.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(ApiKeyAuthGuard)
+  @ApiOkResponse({ type: StudentResponse })
+  async getVerifiedStudents(@Req() req: any): Promise<StudentResponse[]> {
+    const students = await this.verificationService.getVerifiedStudents(
+      req.user,
+    );
+
+    return students.map(
+      (student) =>
+        new StudentResponse({
+          id: student.id,
+          email: student.email,
+          universityName: student.universityName,
+        }),
+    );
   }
 }
