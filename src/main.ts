@@ -1,40 +1,41 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from './app/app.module';
 import { setupSwagger } from './infrastructure/swagger/swagger.service';
-import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { MainModule } from './main.module';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { WinstonModule } from 'nest-winston';
-import { generateRequestId } from './infrastructure/utils/fastify.util';
-
+import { winstonTransports } from './infrastructure/utils/logger.util';
 
 async function bootstrap() {
   const logger = WinstonModule.createLogger({
+    transports: winstonTransports,
+  });
+  // const logger = new Logger();
+
+  const app = await NestFactory.create(MainModule, {
+    bufferLogs: true,
+    logger: logger,
   });
 
-  const app = await NestFactory.create(
-    MainModule
-  );
+  app.enableCors();
 
-  
-  app.enableCors()
+  app.useLogger(logger);
 
   app
     .enableShutdownHooks()
+    .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
+
     .enableVersioning({ type: VersioningType.URI })
-    .useGlobalInterceptors(
-      new ClassSerializerInterceptor(app.get(Reflector)),
+    .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
+    .useGlobalPipes(new ValidationPipe());
 
-    )
-    .useGlobalPipes(
-      new ValidationPipe(),
-    );
+  setupSwagger(app);
 
-  setupSwagger(app)
-
-  
-  
   await app.listen(3000);
+  // logger.log('Server is listening');
 }
 bootstrap();
 

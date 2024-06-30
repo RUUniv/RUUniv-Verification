@@ -4,6 +4,8 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
+  Logger,
   Param,
   Post,
   Req,
@@ -28,6 +30,7 @@ import {
 @Controller({ path: 'users', version: '1' })
 export class UserController {
   constructor(private readonly userService: UserService) {}
+  private readonly logger = new Logger(UserController.name);
 
   @ApiOperation({
     operationId: 'API KEY 생성',
@@ -84,6 +87,9 @@ export class UserController {
       if (e instanceof ApiKeyNotFoundError) {
         throw new ApiKeyNotFoundException();
       }
+
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
     }
   }
 }

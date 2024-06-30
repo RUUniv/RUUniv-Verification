@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Logger,
   Param,
   Post,
   Req,
@@ -42,14 +43,13 @@ import {
 } from '../dto/verification.dto';
 import { EmailVerificationResponse } from '../dto/email-verification.dto';
 import { SupportedUniversityResponse } from '../dto/verification.dto';
-import { Request } from 'express';
-import { User } from '@prisma/client';
 
 @ApiTags('검증')
 @ApiBasicAuth('ApiKey')
 @Controller({ path: 'verification', version: '1' })
 export class VerificationController {
   constructor(private readonly verificationService: VerificationService) {}
+  private readonly logger = new Logger(VerificationController.name);
 
   @Post('/email')
   @ApiOperation({
@@ -76,6 +76,9 @@ export class VerificationController {
       if (e instanceof UniversityNotFoundError) {
         throw new UniversityNotFoundException();
       }
+
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
     }
   }
 
@@ -116,6 +119,7 @@ export class VerificationController {
         throw new DuplicatedVerificationException();
       }
 
+      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }
@@ -178,6 +182,9 @@ export class VerificationController {
       if (e instanceof NotSupportedUniversityError) {
         throw new NotSupportedUniversityException();
       }
+
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
     }
   }
 

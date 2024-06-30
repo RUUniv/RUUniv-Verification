@@ -1,5 +1,5 @@
 import { ApiKey } from './../../../../node_modules/.prisma/client/index.d';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { DatabaseService } from 'src/infrastructure/database/database.service';
 import { ApiKeyNotFoundError } from 'src/common/errors/apiKey.error';

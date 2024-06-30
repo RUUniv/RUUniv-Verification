@@ -45,9 +45,9 @@ export class AuthCodeNotFoundException extends NotFoundException {
   }
 }
 
-export class InvalidAuthCodeException extends NotFoundException {
+export class InvalidAuthCodeException extends HttpException {
   constructor() {
-    super('INVALID_AUTH_CODE');
+    super('INVALID_AUTH_CODE', HttpStatus.BAD_REQUEST);
   }
 }
 

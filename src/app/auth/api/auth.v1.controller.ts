@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Logger,
   Post,
 } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
@@ -20,10 +21,13 @@ import {
   InvalidPasswordError,
   InvalidPasswordException,
 } from 'src/common/errors/auth.error';
+
 @ApiTags('인증')
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  private readonly logger = new Logger(AuthController.name);
 
   @ApiOperation({
     operationId: '회원가입',
@@ -41,6 +45,7 @@ export class AuthController {
         throw new DuplicatedEmailException();
       }
 
+      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }
@@ -65,6 +70,7 @@ export class AuthController {
         throw new InvalidPasswordException();
       }
 
+      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }

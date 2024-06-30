@@ -6,7 +6,6 @@ import { Request } from 'express';
 
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt') {
-  //NestJS Docs
   constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -17,7 +16,6 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   validate(req: Request, payload) {
-    console.log(payload);
     req.user = payload.id;
     return payload;
   }

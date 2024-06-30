@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { DatabaseService } from '../../../infrastructure/database/database.service';
 import * as bcrypt from 'bcrypt';
 import { SignInRequest, SignUpRequest } from '../dto/auth.dto';
@@ -20,6 +20,8 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
+  private readonly logger = new Logger(AuthService.name);
+
   async signUp(data: SignUpRequest): Promise<TokenResponse> {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
@@ -35,6 +37,8 @@ export class AuthService {
     });
 
     const [accessToken, refreshToken] = await this.reissueToken(user);
+
+    this.logger.log(`[SignUp] : ${data.email}`);
 
     return {
       accessToken: accessToken,
@@ -54,6 +58,8 @@ export class AuthService {
     if (!bcrypt.compareSync(data.password, user.password)) {
       throw new InvalidPasswordError();
     }
+
+    this.logger.log(`[SignIn] : ${data.email}`);
 
     const [accessToken, refreshToken] = await this.reissueToken(user);
 

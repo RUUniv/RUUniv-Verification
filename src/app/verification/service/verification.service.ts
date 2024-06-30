@@ -1,5 +1,5 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { DatabaseService } from 'src/infrastructure/database/database.service';
 import {
@@ -24,6 +24,8 @@ export class VerificationService {
     private readonly mailService: EmailService,
   ) {}
 
+  private readonly logger = new Logger(VerificationService.name);
+
   async createEmailVerification(
     data: EmailVerificationRequest,
   ): Promise<boolean> {
@@ -45,6 +47,8 @@ export class VerificationService {
     this.mailService.sendMail(data.email, authCode);
 
     this.cacheService.set('EMAIL_VERIFICATION' + data.email, authCode, 180000);
+
+    this.logger.log(`Create Email Verification Session Email - ${data.email}`);
 
     return true;
   }
@@ -69,6 +73,8 @@ export class VerificationService {
 
     this.cacheService.del('EMAIL_VERIFICATION' + data.email);
 
+    this.logger.log(`Verified Email - ${data.email}`);
+
     return this.dataBaseService.student.create({
       data: {
         universityName: data.universityName,
@@ -87,7 +93,7 @@ export class VerificationService {
   }
 
   async getAllSupportedUniversity(): Promise<string[]> {
-    return Object.values(University).map((unibersity) => unibersity.name);
+    return Object.values(University).map((university) => university.name);
   }
 
   async checkSupportedUniversity(universityName: string): Promise<boolean> {
