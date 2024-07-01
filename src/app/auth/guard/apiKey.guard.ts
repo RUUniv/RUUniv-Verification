@@ -4,7 +4,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import e, { Request } from 'express';
+import { Request } from 'express';
 import {
   InvalidApiKeyException,
   NullApiKeyException,
