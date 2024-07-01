@@ -20,3 +20,5 @@ EXPOSE 8080
 # ENTRYPOINT npm run start:dev
 
 CMD source ./migrate.sh
+
+
