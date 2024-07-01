@@ -35,7 +35,7 @@ async function bootstrap() {
   setupSwagger(app);
 
   await app.listen(3000);
-  // logger.log('Server is listening');
+  logger.log('Server is listening');
 }
 bootstrap();
 
