@@ -23,11 +23,11 @@ export class EmailService {
     });
   }
 
-  async sendMail(emailAddress: string, authCode: string) {
+  async sendMail(emailAddress: string, authCode: string, mailTitle: string) {
     // 메일 본문 구성 form 태그를 이용해 POST 요청 실시
     const mailOptions: EmailOptions = {
       to: emailAddress,
-      subject: 'Is 대학생 ? : 대학생 인증 메일',
+      subject: `${mailTitle} : 대학생 인증 메일`,
       html: `대학생 인증 번호는 "${authCode}" 입니다. </br> 인증번호를 제대로 입력해주세요`,
     };
 

@@ -29,6 +29,12 @@ export class VerificationService {
   async createEmailVerification(
     data: EmailVerificationRequest,
   ): Promise<boolean> {
+    let title = 'RUUniv';
+
+    if (data.mailTitle) {
+      title = data.mailTitle;
+    }
+
     if (await this.cacheService.get('EMAIL_VERIFICATION' + data.email)) {
       this.cacheService.del('EMAIL_VERIFICATION' + data.email);
     }
@@ -44,7 +50,7 @@ export class VerificationService {
 
     const authCode = await this.generateRandomNumber(6);
 
-    this.mailService.sendMail(data.email, authCode);
+    this.mailService.sendMail(data.email, authCode, title);
 
     this.cacheService.set('EMAIL_VERIFICATION' + data.email, authCode, 180000);
 

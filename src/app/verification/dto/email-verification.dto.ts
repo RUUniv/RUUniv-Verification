@@ -19,6 +19,12 @@ export class EmailVerificationRequest {
   })
   @IsNotEmpty()
   universityName: string;
+
+  @ApiProperty({
+    description: '메일 제목 프로젝트 이름',
+    example: '본인 프로젝트 : 대학생 인증 메일 입니다.',
+  })
+  mailTitle: string;
 }
 
 export class VerifyEmailRequest {
