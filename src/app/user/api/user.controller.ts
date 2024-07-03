@@ -23,6 +23,8 @@ import { ApiKeyResponse } from '../dto/apiKey.dto';
 import {
   ApiKeyNotFoundError,
   ApiKeyNotFoundException,
+  ToManyApiKeyError,
+  ToManyApiKeyException,
 } from 'src/common/errors/apiKey.error';
 
 @ApiTags('유저')
@@ -42,12 +44,18 @@ export class UserController {
   @Post('/me/apiKey')
   @ApiOkResponse({ type: ApiKeyResponse })
   async createApiKey(@Req() req: any): Promise<ApiKeyResponse> {
-    const apiKey = await this.userService.createApiKey(req.user.userId);
+    try {
+      const apiKey = await this.userService.createApiKey(req.user.userId);
 
-    return new ApiKeyResponse({
-      apiKey: apiKey.apiKey,
-      id: apiKey.id,
-    });
+      return new ApiKeyResponse({
+        apiKey: apiKey.apiKey,
+        id: apiKey.id,
+      });
+    } catch (e) {
+      if (e instanceof ToManyApiKeyError) {
+        throw new ToManyApiKeyException();
+      }
+    }
   }
 
   @ApiOperation({

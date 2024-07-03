@@ -11,6 +11,13 @@ export class InvalidApiKeyError extends Error {
     super('INVALID_API_KEY');
   }
 }
+
+export class ToManyApiKeyError extends Error {
+  constructor() {
+    super('TO_MANY_API_KEY');
+  }
+}
+
 // ===================================================================
 // HTTP Exceptions
 // ===================================================================
@@ -20,14 +27,20 @@ export class ApiKeyNotFoundException extends NotFoundException {
   }
 }
 
-export class InvalidApiKeyException extends NotFoundException {
+export class InvalidApiKeyException extends HttpException {
   constructor() {
-    super('INVALID API KEY');
+    super('INVALID API KEY', HttpStatus.BAD_REQUEST);
   }
 }
 
 export class NullApiKeyException extends NotFoundException {
   constructor() {
     super('NULL API KEY');
+  }
+}
+
+export class ToManyApiKeyException extends HttpException {
+  constructor() {
+    super('TO_MANY_API_KEY', HttpStatus.BAD_REQUEST);
   }
 }

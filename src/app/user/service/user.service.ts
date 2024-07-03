@@ -1,14 +1,20 @@
 import { ApiKey } from './../../../../node_modules/.prisma/client/index.d';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { DatabaseService } from 'src/infrastructure/database/database.service';
-import { ApiKeyNotFoundError } from 'src/common/errors/apiKey.error';
+import {
+  ApiKeyNotFoundError,
+  ToManyApiKeyError,
+} from 'src/common/errors/apiKey.error';
 
 @Injectable()
 export class UserService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async createApiKey(userId: bigint): Promise<ApiKey> {
+    if ((await this.databaseService.apiKey.count({ where: { userId } })) > 2) {
+      throw new ToManyApiKeyError();
+    }
     const apiKey = await randomUUID();
 
     return this.databaseService.apiKey.create({
