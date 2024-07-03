@@ -40,8 +40,12 @@ export class UserService {
       throw new ApiKeyNotFoundError();
     }
 
+    await this.databaseService.student.deleteMany({
+      where: { apiKeyId: apiKeyId },
+    });
+
     await this.databaseService.apiKey.delete({
-      where: { id: apiKey.id, userId: apiKey.userId },
+      where: { id: apiKeyId, userId: userId },
     });
   }
 }
