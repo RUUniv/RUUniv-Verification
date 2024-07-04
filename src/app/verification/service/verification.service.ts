@@ -41,7 +41,10 @@ export class VerificationService {
 
     const domain = data.email.split('@')[1];
     const domainFound = Object.values(University).some(
-      (university) => university.domain && domain.includes(university.domain),
+      (university) =>
+        university.domain &&
+        domain.includes(university.domain) &&
+        university.name == data.universityName,
     );
 
     if (!domainFound) {
