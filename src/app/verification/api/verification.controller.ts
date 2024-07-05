@@ -51,6 +51,9 @@ export class VerificationController {
   constructor(private readonly verificationService: VerificationService) {}
   private readonly logger = new Logger(VerificationController.name);
 
+  /*
+   * 대학생 인증 기능
+   * */
   @Post('/email')
   @ApiOperation({
     operationId: '학생 인증 메일 발송',
@@ -187,8 +190,7 @@ export class VerificationController {
       throw new InternalServerErrorException(e);
     }
   }
-
-  @Post('/student')
+  @Get('/student')
   @ApiOperation({
     operationId: '인증된 학생 조회',
     summary: '인증된 학생 조회',

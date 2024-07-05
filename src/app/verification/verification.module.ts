@@ -7,6 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-ioredis';
 import { DatabaseModule } from 'src/infrastructure/database/database.module';
 import { EmailService } from './service/email.service';
+import { ManagerService } from './service/manager.service';
+import { ManagerController } from './api/manager.controller';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { EmailService } from './service/email.service';
     }),
     DatabaseModule,
   ],
-  providers: [VerificationService, EmailService],
-  controllers: [VerificationController],
+  providers: [VerificationService, EmailService, ManagerService],
+  controllers: [VerificationController, ManagerController],
 })
 export class VerificationModule {}

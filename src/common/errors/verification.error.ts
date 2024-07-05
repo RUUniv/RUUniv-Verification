@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 
 export class UniversityNotFoundError extends Error {
   constructor() {
@@ -51,9 +56,9 @@ export class InvalidAuthCodeException extends HttpException {
   }
 }
 
-export class DuplicatedVerificationException extends HttpException {
+export class DuplicatedVerificationException extends ConflictException {
   constructor() {
-    super('DUPLICATE_VERIFICATION', HttpStatus.BAD_REQUEST);
+    super('DUPLICATE_VERIFICATION');
   }
 }
 
