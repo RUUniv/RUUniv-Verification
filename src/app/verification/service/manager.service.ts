@@ -14,6 +14,7 @@ export class ManagerService {
       },
     });
   }
+
   async deleteVerifiedStudent(
     apiKeyId: bigint,
     studentId: bigint,

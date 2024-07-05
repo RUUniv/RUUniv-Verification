@@ -7,6 +7,7 @@ import {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -63,7 +64,7 @@ export class ManagerController {
     );
   }
 
-  @Post('/student/:studentId')
+  @Delete('/student/:studentId')
   @ApiOperation({
     operationId: '특정 인증된 학생 삭제',
     summary: '특정 인증된 학생 삭제',
