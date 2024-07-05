@@ -88,9 +88,9 @@ export class ManagerController {
 
   @Post('/student/registry')
   @ApiOperation({
-    operationId: '특정 인증된 학생 삭제',
-    summary: '특정 인증된 학생 삭제',
-    description: '특정 인증된 학생 삭제합니다.',
+    operationId: '특정 인증된 학생 등록',
+    summary: '특정 인증된 학생 등록',
+    description: '특정 인증된 학생을 등록합니다.',
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(ApiKeyAuthGuard)
