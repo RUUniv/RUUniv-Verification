@@ -8,12 +8,12 @@ import {
 import { MainModule } from './main.module';
 import { WinstonModule } from 'nest-winston';
 import { winstonTransports } from './infrastructure/utils/logger.util';
+import * as expressBasicAuth from 'express-basic-auth';
 
 async function bootstrap() {
   const logger = WinstonModule.createLogger({
     transports: winstonTransports,
   });
-  // const logger = new Logger();
 
   const app = await NestFactory.create(MainModule, {
     bufferLogs: true,
@@ -23,6 +23,16 @@ async function bootstrap() {
   app.enableCors();
 
   app.useLogger(logger);
+
+  app.use(
+    ['/swagger'],
+    expressBasicAuth({
+      challenge: true,
+      users: {
+        [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
+      },
+    }),
+  );
 
   app
     .enableShutdownHooks()
