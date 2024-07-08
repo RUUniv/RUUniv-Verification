@@ -39,7 +39,10 @@ export class AuthController {
   @ApiOkResponse({ type: TokenResponse })
   async signUp(@Body() body: SignUpRequest): Promise<TokenResponse> {
     try {
-      return await this.authService.signUp(body);
+      this.logger.log(`Sign Up Start : ${body.email}`);
+      const token = await this.authService.signUp(body);
+      this.logger.log(`Sign Up Success : ${body.email}`);
+      return token;
     } catch (e) {
       if (e instanceof DuplicatedEmailError) {
         throw new DuplicatedEmailException();
@@ -60,7 +63,10 @@ export class AuthController {
   @ApiOkResponse({ type: TokenResponse })
   async signIn(@Body() body: SignInRequest): Promise<TokenResponse> {
     try {
-      return await this.authService.signIn(body);
+      this.logger.log(`Sign In Start : ${body.email}`);
+      const token = await this.authService.signIn(body);
+      this.logger.log(`Sign In Success : ${body.email}`);
+      return token;
     } catch (e) {
       if (e instanceof UserNotFoundError) {
         throw new UserNotFoundException();

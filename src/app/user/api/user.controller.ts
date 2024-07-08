@@ -45,8 +45,9 @@ export class UserController {
   @ApiOkResponse({ type: ApiKeyResponse })
   async createApiKey(@Req() req: any): Promise<ApiKeyResponse> {
     try {
+      this.logger.log(`Create ApiKey Start , Email : ${req.user}`);
       const apiKey = await this.userService.createApiKey(req.user.userId);
-
+      this.logger.log(`Create ApiKey Success , Email : ${req.user}`);
       return new ApiKeyResponse({
         apiKey: apiKey.apiKey,
         id: apiKey.id,
@@ -68,8 +69,9 @@ export class UserController {
   @Get('/me/apiKey')
   @ApiOkResponse({ type: ApiKeyResponse })
   async getApiKeys(@Req() req: any): Promise<ApiKeyResponse[]> {
+    this.logger.log(`Get ApiKeys Start , Email : ${req.user}`);
     const apiKeys = await this.userService.getApiKeys(req.user.userId);
-
+    this.logger.log(`Get ApiKey Success , Email : ${req.user}`);
     return apiKeys.map(
       (apiKey) =>
         new ApiKeyResponse({
@@ -90,7 +92,9 @@ export class UserController {
   @ApiOkResponse({ type: ApiKeyResponse })
   async deleteApiKey(@Req() req: any, @Param('id') apiKeyId: bigint) {
     try {
+      this.logger.log(`Delete ApiKey Start , Email : ${req.user}`);
       await this.userService.deleteApiKey(req.user.userId, apiKeyId);
+      this.logger.log(`Delete ApiKey Success , Email : ${req.user}`);
     } catch (e) {
       if (e instanceof ApiKeyNotFoundError) {
         throw new ApiKeyNotFoundException();

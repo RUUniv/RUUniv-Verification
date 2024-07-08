@@ -1,5 +1,5 @@
 import { ApiKey } from './../../../../node_modules/.prisma/client/index.d';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { DatabaseService } from 'src/infrastructure/database/database.service';
 import {
@@ -10,12 +10,14 @@ import {
 @Injectable()
 export class UserService {
   constructor(private readonly databaseService: DatabaseService) {}
+  private readonly logger = new Logger(UserService.name);
 
   async createApiKey(userId: bigint): Promise<ApiKey> {
     if ((await this.databaseService.apiKey.count({ where: { userId } })) > 2) {
       throw new ToManyApiKeyError();
     }
     const apiKey = await randomUUID();
+    this.logger.log(`Create ApiKey : ${apiKey}`);
 
     return this.databaseService.apiKey.create({
       data: {
@@ -48,6 +50,4 @@ export class UserService {
       where: { id: apiKeyId, userId: userId },
     });
   }
-
- 
 }

@@ -35,10 +35,11 @@ export class AuthService {
         password: hashedPassword,
       },
     });
+    this.logger.log(`Create User : ${user.email}`);
 
     const [accessToken, refreshToken] = await this.reissueToken(user);
 
-    this.logger.log(`[SignUp] : ${data.email}`);
+    this.logger.log(`Create Token : ${[accessToken, refreshToken]}`);
 
     return {
       accessToken: accessToken,
@@ -59,9 +60,9 @@ export class AuthService {
       throw new InvalidPasswordError();
     }
 
-    this.logger.log(`[SignIn] : ${data.email}`);
-
     const [accessToken, refreshToken] = await this.reissueToken(user);
+
+    this.logger.log(`Create Token : ${[accessToken, refreshToken]}`);
 
     return {
       accessToken: accessToken,

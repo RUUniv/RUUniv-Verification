@@ -50,9 +50,13 @@ export class ManagerController {
   @UseGuards(ApiKeyAuthGuard)
   @ApiOkResponse({ type: StudentResponse })
   async getVerifiedStudents(@Req() req: any): Promise<StudentResponse[]> {
+    this.logger.log(`Get All Verified Student Start , ApiKey : ${req.user}`);
+
     const students = await this.verificationService.getVerifiedStudents(
       req.user,
     );
+
+    this.logger.log(`Get All Verified Student Success , ApiKey : ${req.user}`);
 
     return students.map(
       (student) =>
@@ -77,9 +81,17 @@ export class ManagerController {
     @Req() req: any,
     @Param('studentId') studentId: bigint,
   ) {
+    this.logger.log(
+      `Delete Verified Student Start , ApiKey : ${req.user} , ID : ${studentId}`,
+    );
+
     const response = await this.manageService.deleteVerifiedStudent(
       req.user,
       studentId,
+    );
+
+    this.logger.log(
+      `Delete Verified Student Success , ApiKey : ${req.user} , ID : ${studentId}`,
     );
 
     return new DeleteStudentsResponse({
@@ -100,7 +112,15 @@ export class ManagerController {
     @Req() req: any,
     @Body() data: RegistryStudentRequest,
   ): Promise<StudentResponse> {
+    this.logger.log(
+      `Registry Student Start , ApiKey : ${req.user} , ID : ${data.email} , Univ : ${data.universityName}`,
+    );
+
     const response = await this.manageService.registryStudent(req.user, data);
+
+    this.logger.log(
+      `Registry Student Success , ApiKey : ${req.user} , ID : ${data.email} , Univ : ${data.universityName}`,
+    );
 
     return new StudentResponse({
       id: response.id,

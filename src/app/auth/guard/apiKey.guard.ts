@@ -16,7 +16,6 @@ export class ApiKeyAuthGuard implements CanActivate {
   constructor(private readonly dataBaseService: DatabaseService) {}
   private readonly logger = new Logger(ApiKeyAuthGuard.name);
 
-  //todo : 예외처리 수정 필요
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
     const header = await context.switchToHttp().getRequest().headers.apikey;
@@ -30,6 +29,7 @@ export class ApiKeyAuthGuard implements CanActivate {
     });
 
     if (apiKey != null) {
+      this.logger.log(`ApiKey Pass : ${apiKey.id}`);
       request.user = apiKey.id;
       return true;
     }

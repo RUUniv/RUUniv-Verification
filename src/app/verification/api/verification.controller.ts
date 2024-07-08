@@ -67,8 +67,16 @@ export class VerificationController {
     @Body() body: EmailVerificationRequest,
   ): Promise<EmailVerificationResponse> {
     try {
+      this.logger.log(
+        `Create Email Verification Start , Email : ${body.email} , Univ : ${body.universityName}`,
+      );
+
       const response =
         await this.verificationService.createEmailVerification(body);
+
+      this.logger.log(
+        `Create Email Verification Success , Email : ${body.email} , Univ : ${body.universityName}`,
+      );
 
       return new EmailVerificationResponse({
         email: body.email,
@@ -99,9 +107,17 @@ export class VerificationController {
     @Body() body: VerifyEmailRequest,
   ): Promise<VerifyEmailResponse> {
     try {
+      this.logger.log(
+        `Verify Email Start , Email : ${body.email} , Univ : ${body.universityName}`,
+      );
+
       const response = await this.verificationService.verifyEmail(
         body,
         req.user,
+      );
+
+      this.logger.log(
+        `Verify Email Success , Email : ${body.email} , Univ : ${body.universityName}`,
       );
 
       return new VerifyEmailResponse({
@@ -139,8 +155,16 @@ export class VerificationController {
   async deleteVerifiedStudents(
     @Req() req: any,
   ): Promise<DeleteStudentsResponse> {
+    this.logger.log(
+      `Delete All Verified Students Start , ApiKey : ${req.user}`,
+    );
+
     const response = await this.verificationService.deleteVerifiedStudents(
       req.user,
+    );
+
+    this.logger.log(
+      `Delete All Verified Students Success , ApiKey : ${req.user}`,
     );
 
     return new DeleteStudentsResponse({
@@ -174,8 +198,16 @@ export class VerificationController {
     @Param('university') universityName: string,
   ): Promise<SupportedUniversityResponse> {
     try {
+      this.logger.log(
+        `Check Univ Is Supported Start , Univ : ${universityName}`,
+      );
+
       const response =
         await this.verificationService.checkSupportedUniversity(universityName);
+
+      this.logger.log(
+        `Check Univ Is Supported Success , Univ : ${universityName}`,
+      );
 
       return new SupportedUniversityResponse({
         isSupported: response,
@@ -200,9 +232,13 @@ export class VerificationController {
   @UseGuards(ApiKeyAuthGuard)
   @ApiOkResponse({ type: StudentResponse })
   async getVerifiedStudents(@Req() req: any): Promise<StudentResponse[]> {
+    this.logger.log(`Get Verified Students Start , ApiKey : ${req.user}`);
+
     const students = await this.verificationService.getVerifiedStudents(
       req.user,
     );
+
+    this.logger.log(`Get Verified Students Success , ApiKey : ${req.user}`);
 
     return students.map(
       (student) =>
