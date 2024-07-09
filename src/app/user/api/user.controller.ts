@@ -96,11 +96,11 @@ export class UserController {
       await this.userService.deleteApiKey(req.user.userId, apiKeyId);
       this.logger.log(`Delete ApiKey Success , Email : ${req.user}`);
     } catch (e) {
+      this.logger.error(e);
       if (e instanceof ApiKeyNotFoundError) {
         throw new ApiKeyNotFoundException();
       }
 
-      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }

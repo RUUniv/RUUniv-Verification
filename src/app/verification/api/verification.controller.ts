@@ -84,11 +84,11 @@ export class VerificationController {
         isSend: response,
       });
     } catch (e) {
+      this.logger.error(e);
       if (e instanceof UniversityNotFoundError) {
         throw new UniversityNotFoundException();
       }
 
-      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }
@@ -126,6 +126,7 @@ export class VerificationController {
         isVerify: true,
       });
     } catch (e) {
+      this.logger.error(e);
       if (e instanceof AuthCodeNotFoundError) {
         throw new AuthCodeNotFoundException();
       }
@@ -138,7 +139,6 @@ export class VerificationController {
         throw new DuplicatedVerificationException();
       }
 
-      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }
@@ -214,11 +214,11 @@ export class VerificationController {
         universityName: universityName,
       });
     } catch (e) {
+      this.logger.error(e);
       if (e instanceof NotSupportedUniversityError) {
         throw new NotSupportedUniversityException();
       }
 
-      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }

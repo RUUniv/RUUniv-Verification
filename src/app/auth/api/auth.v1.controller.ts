@@ -44,11 +44,11 @@ export class AuthController {
       this.logger.log(`Sign Up Success : ${body.email}`);
       return token;
     } catch (e) {
+      this.logger.error(e);
       if (e instanceof DuplicatedEmailError) {
         throw new DuplicatedEmailException();
       }
 
-      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }
@@ -68,6 +68,7 @@ export class AuthController {
       this.logger.log(`Sign In Success : ${body.email}`);
       return token;
     } catch (e) {
+      this.logger.error(e);
       if (e instanceof UserNotFoundError) {
         throw new UserNotFoundException();
       }
@@ -76,7 +77,6 @@ export class AuthController {
         throw new InvalidPasswordException();
       }
 
-      this.logger.error(e);
       throw new InternalServerErrorException(e);
     }
   }
