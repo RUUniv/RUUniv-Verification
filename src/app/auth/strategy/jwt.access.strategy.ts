@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 
 @Injectable()
@@ -15,10 +15,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  private readonly logger = new Logger(JwtAccessStrategy.name);
-
   validate(req: Request, payload) {
-    this.logger.log(`Access Token Authentication Success`);
     req.user = payload.id;
     return payload;
   }

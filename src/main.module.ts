@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppModule } from './app/app.module';
 import {} from './infrastructure/database/database.module';
 import {} from './infrastructure/database/database.service';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { ConfigModule } from '@nestjs/config';
-import { MethodTimeMeterInterceptor } from './infrastructure/Interceptor/method.time.meter.interceptor';
+import { MethodTimeMeterInterceptor } from './common/Interceptor/method.time.meter.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,4 +20,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     { provide: APP_INTERCEPTOR, useClass: MethodTimeMeterInterceptor },
   ],
 })
-export class MainModule {}
+export class MainModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

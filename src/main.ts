@@ -37,11 +37,9 @@ async function bootstrap() {
   app
     .enableShutdownHooks()
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
-
     .enableVersioning({ type: VersioningType.URI })
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
     .useGlobalPipes(new ValidationPipe());
-
   setupSwagger(app);
 
   await app.listen(3000);
