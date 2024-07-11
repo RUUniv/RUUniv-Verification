@@ -11,11 +11,13 @@ export class LoggerMiddleware implements NestMiddleware {
 
     // 응답이 끝났을 때
     response.on('finish', () => {
-      const { statusCode } = response;
-      const contentLength = response.get('content-length');
-      this.logger.log(
-        `${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,
-      );
+      if (originalUrl != '/app') {
+        const { statusCode } = response;
+        const contentLength = response.get('content-length');
+        this.logger.log(
+          `${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,
+        );
+      }
     });
 
     next();

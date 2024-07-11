@@ -15,11 +15,7 @@ export class MethodTimeMeterInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    console.log('func timer');
     const start = Date.now();
-
-    console.log(context.getHandler().name);
-    console.log(context.getClass().name);
 
     const funcName = context.getHandler().name;
     const className = context.getClass().name;
