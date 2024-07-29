@@ -1,25 +1,6 @@
 version: '3'
-volumes:
-  ruuniv_mysql:
-    external: true
-
 
 services:
-  mysql-server:
-    image: mysql:latest
-    container_name: mysql-server
-    volumes:
-      - ruuniv_mysql:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: univ
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      TZ: Asia/Seoul
-    env_file:
-      - .env
-    ports:
-      - "3305:3306"
   redis-server:
     image: redis
     container_name: redis-server
@@ -40,5 +21,4 @@ services:
     env_file:
       - .env
     depends_on:
-      - mysql-server
       - redis-server
