@@ -29,7 +29,7 @@ export class VerificationService {
   async createEmailVerification(
     data: EmailVerificationRequest,
   ): Promise<boolean> {
-    let title = 'RUUniv';
+    let title = 'RUUniv : 대학생 인증 메일';
 
     if (data.mailTitle) {
       title = data.mailTitle;

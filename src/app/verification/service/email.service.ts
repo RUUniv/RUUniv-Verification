@@ -27,7 +27,7 @@ export class EmailService {
     // 메일 본문 구성 form 태그를 이용해 POST 요청 실시
     const mailOptions: EmailOptions = {
       to: emailAddress,
-      subject: `${mailTitle} : 대학생 인증 메일`,
+      subject: mailTitle,
       html: `대학생 인증 번호는 "${authCode}" 입니다. </br> 인증번호를 제대로 입력해주세요`,
     };
 
