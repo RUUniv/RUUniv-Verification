@@ -101,6 +101,17 @@ export class VerificationService {
     return true;
   }
 
+  async deleteVerifiedStudent(
+    apiKeyId: bigint,
+    email: string,
+  ): Promise<boolean> {
+    await this.dataBaseService.student.deleteMany({
+      where: { apiKeyId: apiKeyId, email: email },
+    });
+
+    return true;
+  }
+
   async getAllSupportedUniversity(): Promise<string[]> {
     return Object.values(University).map((university) => university.name);
   }

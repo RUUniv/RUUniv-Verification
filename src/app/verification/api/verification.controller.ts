@@ -183,6 +183,34 @@ export class VerificationController {
     });
   }
 
+  @Delete('/email/:email')
+  @ApiOperation({
+    operationId: '이메일을 이용해서 해당 API키에 인증된 특정 학생 삭제',
+    summary: '이메일을 이용해서 해당 API키에 인증된 특정 학생 삭제',
+    description:
+      '이메일을 이용해 해당 API키에 인증된 특정 학생 삭제를 요청합니다.',
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(ApiKeyAuthGuard)
+  @ApiOkResponse({ type: BaseResponse })
+  async deleteVerifiedStudent(
+    @Req() req: any,
+    @Param('email') email: string,
+  ): Promise<BaseResponse> {
+    const response = await this.verificationService.deleteVerifiedStudent(
+      req.user,
+      email,
+    );
+
+    return new BaseResponse({
+      message: 'Success',
+      data: new DeleteStudentsResponse({
+        isDelete: response,
+      }),
+      isSuccess: true,
+    });
+  }
+
   @Get('/univ')
   @ApiOperation({
     operationId: '인증을 지원하는 대학 전체 목록 조회',
