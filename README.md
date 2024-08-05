@@ -18,3 +18,6 @@
 
 ### ERD
 <img width="705" alt="ERD" src="https://github.com/bandalgomsu/univ-student-check/assets/121839239/1988e1b5-2951-4a5e-9ec7-3df5a0733fea">
+
+### Infra Architecture
+![RUUNIV drawio](https://github.com/user-attachments/assets/523fc8ab-3da8-4343-ad93-2fc3a95cc7dd)
