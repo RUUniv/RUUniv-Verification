@@ -39,18 +39,6 @@ export class VerificationService {
       this.cacheService.del('EMAIL_VERIFICATION' + data.email);
     }
 
-    const domain = data.email.split('@')[1];
-    const domainFound = Object.values(University).some(
-      (university) =>
-        university.domain &&
-        domain.includes(university.domain) &&
-        university.name == data.universityName,
-    );
-
-    if (!domainFound) {
-      throw new UniversityNotFoundError();
-    }
-
     const authCode = await this.generateRandomNumber(6);
 
     this.mailService.sendMail(data.email, authCode, title);
@@ -67,6 +55,7 @@ export class VerificationService {
     apiKeyId: bigint,
   ): Promise<Student> {
     await this.checkDuplicateVerification(data.email, apiKeyId);
+    await this.checkSupportedDomain(data.email, data.universityName);
 
     const authCode = await this.cacheService.get(
       'EMAIL_VERIFICATION' + data.email,
@@ -91,6 +80,23 @@ export class VerificationService {
         apiKeyId: apiKeyId,
       },
     });
+  }
+
+  private async checkSupportedDomain(
+    email: string,
+    universityName: string,
+  ): Promise<void> {
+    const domain = email.split('@')[1];
+    const domainFound = Object.values(University).some(
+      (university) =>
+        university.domain &&
+        domain.includes(university.domain) &&
+        university.name == universityName,
+    );
+
+    if (!domainFound) {
+      throw new UniversityNotFoundError();
+    }
   }
 
   async deleteVerifiedStudents(apiKeyId: bigint): Promise<boolean> {

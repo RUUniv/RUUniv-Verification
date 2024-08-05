@@ -27,15 +27,12 @@ import {
 } from '../dto/email-verification.dto';
 import {
   AuthCodeNotFoundError,
-  AuthCodeNotFoundException,
   DuplicatedVerificationError,
   DuplicatedVerificationException,
   InvalidAuthCodeError,
   InvalidAuthCodeException,
   NotSupportedUniversityError,
-  NotSupportedUniversityException,
   UniversityNotFoundError,
-  UniversityNotFoundException,
 } from 'src/common/errors/verification.error';
 import {
   DeleteStudentsResponse,
@@ -82,19 +79,7 @@ export class VerificationController {
       });
     } catch (e) {
       this.logger.error(e);
-      if (e instanceof UniversityNotFoundError) {
-        return new BaseResponse({
-          message: 'University Not Found',
-          data: null,
-          isSuccess: false,
-        });
-      }
-
-      return new BaseResponse({
-        message: 'Internal Server Error',
-        data: null,
-        isSuccess: false,
-      });
+      throw new InternalServerErrorException(e);
     }
   }
 
@@ -152,11 +137,15 @@ export class VerificationController {
         });
       }
 
-      return new BaseResponse({
-        message: 'Internal Server Error',
-        data: null,
-        isSuccess: false,
-      });
+      if (e instanceof UniversityNotFoundError) {
+        return new BaseResponse({
+          message: 'University Not Found',
+          data: null,
+          isSuccess: false,
+        });
+      }
+
+      throw new InternalServerErrorException(e);
     }
   }
 
@@ -170,17 +159,22 @@ export class VerificationController {
   @UseGuards(ApiKeyAuthGuard)
   @ApiOkResponse({ type: BaseResponse })
   async deleteVerifiedStudents(@Req() req: any): Promise<BaseResponse> {
-    const response = await this.verificationService.deleteVerifiedStudents(
-      req.user,
-    );
+    try {
+      const response = await this.verificationService.deleteVerifiedStudents(
+        req.user,
+      );
 
-    return new BaseResponse({
-      message: 'Success',
-      data: new DeleteStudentsResponse({
-        isDelete: response,
-      }),
-      isSuccess: true,
-    });
+      return new BaseResponse({
+        message: 'Success',
+        data: new DeleteStudentsResponse({
+          isDelete: response,
+        }),
+        isSuccess: true,
+      });
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
+    }
   }
 
   @Delete('/email/:email')
@@ -197,18 +191,23 @@ export class VerificationController {
     @Req() req: any,
     @Param('email') email: string,
   ): Promise<BaseResponse> {
-    const response = await this.verificationService.deleteVerifiedStudent(
-      req.user,
-      email,
-    );
+    try {
+      const response = await this.verificationService.deleteVerifiedStudent(
+        req.user,
+        email,
+      );
 
-    return new BaseResponse({
-      message: 'Success',
-      data: new DeleteStudentsResponse({
-        isDelete: response,
-      }),
-      isSuccess: true,
-    });
+      return new BaseResponse({
+        message: 'Success',
+        data: new DeleteStudentsResponse({
+          isDelete: response,
+        }),
+        isSuccess: true,
+      });
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
+    }
   }
 
   @Get('/univ')
@@ -221,11 +220,16 @@ export class VerificationController {
   @UseGuards(ApiKeyAuthGuard)
   @ApiOkResponse({ type: BaseResponse })
   async getAllSupportedUniversity(): Promise<BaseResponse> {
-    return new BaseResponse({
-      message: 'Success',
-      data: await this.verificationService.getAllSupportedUniversity(),
-      isSuccess: true,
-    });
+    try {
+      return new BaseResponse({
+        message: 'Success',
+        data: await this.verificationService.getAllSupportedUniversity(),
+        isSuccess: true,
+      });
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
+    }
   }
 
   @Get('/univ/:university')
@@ -262,11 +266,7 @@ export class VerificationController {
         });
       }
 
-      return new BaseResponse({
-        message: 'Internal Server Error',
-        data: null,
-        isSuccess: false,
-      });
+      throw new InternalServerErrorException(e);
     }
   }
 
@@ -280,21 +280,26 @@ export class VerificationController {
   @UseGuards(ApiKeyAuthGuard)
   @ApiOkResponse({ type: BaseResponse })
   async getVerifiedStudents(@Req() req: any): Promise<BaseResponse> {
-    const students = await this.verificationService.getVerifiedStudents(
-      req.user,
-    );
+    try {
+      const students = await this.verificationService.getVerifiedStudents(
+        req.user,
+      );
 
-    return new BaseResponse({
-      message: 'Success',
-      data: students.map(
-        (student) =>
-          new StudentResponse({
-            id: student.id,
-            email: student.email,
-            universityName: student.universityName,
-          }),
-      ),
-      isSuccess: true,
-    });
+      return new BaseResponse({
+        message: 'Success',
+        data: students.map(
+          (student) =>
+            new StudentResponse({
+              id: student.id,
+              email: student.email,
+              universityName: student.universityName,
+            }),
+        ),
+        isSuccess: true,
+      });
+    } catch (e) {
+      this.logger.error(e);
+      throw new InternalServerErrorException(e);
+    }
   }
 }
