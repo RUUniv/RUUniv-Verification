@@ -9,6 +9,7 @@ import { MainModule } from './main.module';
 import { WinstonModule } from 'nest-winston';
 import { winstonTransports } from './infrastructure/utils/logger.util';
 import * as expressBasicAuth from 'express-basic-auth';
+import { kafkaOptions } from './infrastructure/kafka/kafka.config';
 
 async function bootstrap() {
   const logger = WinstonModule.createLogger({
@@ -19,6 +20,8 @@ async function bootstrap() {
     bufferLogs: true,
     logger: logger,
   });
+
+  app.connectMicroservice(kafkaOptions);
 
   app.enableCors();
 
@@ -33,6 +36,8 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.startAllMicroservices();
 
   app
     .enableShutdownHooks()
