@@ -47,8 +47,8 @@ async function bootstrap() {
     .useGlobalPipes(new ValidationPipe());
   setupSwagger(app);
 
-  await app.listen(3000);
-  logger.log('Server is listening');
+  await app.listen(process.env.PORT);
+  logger.log(`Server is listening ${process.env.PORT}`);
 }
 bootstrap();
 
