@@ -1,4 +1,4 @@
-import { Controller, Inject, Injectable, Logger } from '@nestjs/common';
+import { Controller, Inject, Logger } from '@nestjs/common';
 import { KeyService } from '../service/key.service';
 import { ClientKafka, EventPattern } from '@nestjs/microservices';
 import {

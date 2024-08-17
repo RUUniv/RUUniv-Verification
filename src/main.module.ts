@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, Inject } from '@nestjs/common';
 import { AppModule } from './app/app.module';
 import {} from './infrastructure/database/database.module';
 import {} from './infrastructure/database/database.service';
@@ -25,7 +25,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           client: {
             clientId: 'ruuniv-verification',
-            brokers: ['localhost:10000', 'localhost:10001', 'localhost:10002'],
+            brokers: [
+              process.env.KAFKA_SERVER_1,
+              process.env.KAFKA_SERVER_2,
+              process.env.KAFKA_SERVER_3,
+            ],
           },
           consumer: {
             groupId: 'ruuniv-verification',
