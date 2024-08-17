@@ -19,13 +19,14 @@ import {
 } from '@nestjs/swagger';
 import { UserService } from '../service/user.service';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiKeyResponse } from '../dto/apiKey.dto';
+
 import {
   ApiKeyNotFoundError,
   ApiKeyNotFoundException,
   ToManyApiKeyError,
   ToManyApiKeyException,
 } from 'src/common/errors/apiKey.error';
+import { ApiKeyResponse } from 'src/app/keys/dto/key.dto';
 
 @ApiTags('유저')
 @ApiBearerAuth()
@@ -48,7 +49,7 @@ export class UserController {
       const apiKey = await this.userService.createApiKey(req.user.userId);
       return new ApiKeyResponse({
         apiKey: apiKey.apiKey,
-        id: apiKey.id,
+        apiKeyId: apiKey.id,
       });
     } catch (e) {
       if (e instanceof ToManyApiKeyError) {
@@ -72,7 +73,7 @@ export class UserController {
       (apiKey) =>
         new ApiKeyResponse({
           apiKey: apiKey.apiKey,
-          id: apiKey.id,
+          apiKeyId: apiKey.id,
         }),
     );
   }

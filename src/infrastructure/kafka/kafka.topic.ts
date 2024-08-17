@@ -1,0 +1,10 @@
+/**
+ * Produce
+ */
+
+export const KAFKA_TOPIC_COLLECT_STATISTICS = 'COLLECT_STATISTICS';
+/**
+ * Consume
+ */
+export const KAFKA_TOPIC_CREATE_API_KEY = 'CREATE_API_KEY';
+export const KAFKA_TOPIC_DELETE_API_KEY = 'DELETE_API_KEY';

@@ -8,7 +8,6 @@ import {
 import { MainModule } from './main.module';
 import { WinstonModule } from 'nest-winston';
 import { winstonTransports } from './infrastructure/utils/logger.util';
-import * as expressBasicAuth from 'express-basic-auth';
 import { kafkaOptions } from './infrastructure/kafka/kafka.config';
 
 async function bootstrap() {
@@ -27,18 +26,6 @@ async function bootstrap() {
 
   app.useLogger(logger);
 
-  app.use(
-    ['/swagger'],
-    expressBasicAuth({
-      challenge: true,
-      users: {
-        [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
-      },
-    }),
-  );
-
-  app.startAllMicroservices();
-
   app
     .enableShutdownHooks()
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
@@ -46,6 +33,8 @@ async function bootstrap() {
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
     .useGlobalPipes(new ValidationPipe());
   setupSwagger(app);
+
+  app.startAllMicroservices();
 
   await app.listen(process.env.PORT);
   logger.log(`Server is listening ${process.env.PORT}`);

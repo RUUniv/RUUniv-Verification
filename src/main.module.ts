@@ -9,6 +9,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { StatisticsMiddleware } from './common/middleware/statistics.middleware';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+
 @Module({
   imports: [
     ConfigModule.forRoot({

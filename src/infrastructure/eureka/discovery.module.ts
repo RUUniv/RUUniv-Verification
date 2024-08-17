@@ -8,7 +8,7 @@ import { EurekaModule } from 'nestjs-eureka/';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         service: {
-          name: 'ruuniv-verfication-server',
+          name: 'ruuniv-verification-server',
           port: configService.get<number>('PORT'),
           host: configService.get<string>('HOST'),
         },

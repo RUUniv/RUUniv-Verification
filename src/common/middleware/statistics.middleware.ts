@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { NextFunction, Request, Response } from 'express';
-import { KAFKA_TOPIC_COLLECT_STATISTICS } from 'src/infrastructure/kafka/kafka.config';
+import { KAFKA_TOPIC_COLLECT_STATISTICS } from 'src/infrastructure/kafka/kafka.topic';
 
 @Injectable()
 export class StatisticsMiddleware implements NestMiddleware {

@@ -9,12 +9,14 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 
 import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { KeyModule } from './keys/key.module';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
     VerificationModule,
+    KeyModule,
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
