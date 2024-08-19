@@ -37,7 +37,7 @@ async function bootstrap() {
   app.startAllMicroservices();
 
   await app.listen(process.env.PORT);
-  logger.log(`Server is listening ${process.env.PORT}`);
+  logger.log(`Server is listening ${process.env.PORT} !`);
 }
 bootstrap();
 
