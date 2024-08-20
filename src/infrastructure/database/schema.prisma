@@ -13,21 +13,18 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   password  String
   updatedAt DateTime @default(now()) @map("updated_at")
-  apiKeys   ApiKey[]
 
   @@map("users")
 }
 
 model ApiKey {
   id        BigInt    @id @default(autoincrement())
-  userId    BigInt    @map("user_id")
+  userId    BigInt
   apiKey    String    @unique @map("api_key")
   updatedAt DateTime  @default(now()) @map("updated_at")
   createdAt DateTime  @default(now()) @map("created_at")
-  user      User      @relation(fields: [userId], references: [id])
   students  Student[]
 
-  @@index([userId], map: "api_key_user_id_fkey")
   @@map("api_key")
 }
 
