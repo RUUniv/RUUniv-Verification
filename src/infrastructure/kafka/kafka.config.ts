@@ -4,7 +4,11 @@ export const kafkaOptions: KafkaOptions = {
   transport: Transport.KAFKA,
   options: {
     client: {
-      brokers: ['localhost:10000', 'localhost:10001', 'localhost:10002'],
+      brokers: [
+        process.env.KAFKA_SERVER_1,
+        process.env.KAFKA_SERVER_2,
+        process.env.KAFKA_SERVER_3,
+      ],
     },
   },
 };
