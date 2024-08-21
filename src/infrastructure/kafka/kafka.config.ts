@@ -4,11 +4,7 @@ export const kafkaOptions: KafkaOptions = {
   transport: Transport.KAFKA,
   options: {
     client: {
-      brokers: [
-        process.env.KAFKA_SERVER_1,
-        process.env.KAFKA_SERVER_2,
-        process.env.KAFKA_SERVER_3,
-      ],
+      brokers: [process.env.KAFKA_SERVER_1],
     },
   },
 };
