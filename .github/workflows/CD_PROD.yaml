@@ -2,6 +2,9 @@ name: CD_PROD
 
 on:
   workflow_dispatch:
+  push: 
+    branches:
+      - main
   
 permissions: write-all #테스트 결과 작성을 위해 쓰기권한 추가
 
