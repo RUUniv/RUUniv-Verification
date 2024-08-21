@@ -29,6 +29,6 @@ jobs:
              cd ./project
              sudo docker stop ruuniv-verification-server
              sudo docker rm ruuniv-verification-server
-             sudo docker rmi $(docker images -q) 
+             sudo docker rmi $(sudo docker images -q) 
              sudo docker pull ${{ secrets.DOCKER_REPO }}/ruuniv-verification-server
              sudo docker run -i -t --env-file ./verification.env -p 3000:3000 -d --name ruuniv-verification-server ${{ secrets.DOCKER_REPO }}/ruuniv-verification-server:latest
