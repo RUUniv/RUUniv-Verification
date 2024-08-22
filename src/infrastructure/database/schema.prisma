@@ -25,6 +25,7 @@ model ApiKey {
   createdAt DateTime  @default(now()) @map("created_at")
   students  Student[]
 
+  @@index([userId], map: "apiKey_userId_index")
   @@map("api_key")
 }
 
