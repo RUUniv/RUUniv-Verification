@@ -18,4 +18,10 @@ export class KeyController {
         new ApiKeyResponse({ apiKeyId: apiKey.id, apiKey: apiKey.apiKey }),
     );
   }
+
+  @Get('test')
+  @ApiOkResponse({ type: ApiKeyResponse })
+  async test(@Query('userId') userId: bigint, @Query('apiKey') apiKey: string) {
+    await this.keyService.deleteApiKey(userId, apiKey);
+  }
 }

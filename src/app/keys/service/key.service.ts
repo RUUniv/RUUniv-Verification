@@ -27,9 +27,9 @@ export class KeyService {
     });
   }
 
-  async deleteApiKey(userId: bigint, apiKeyId: bigint) {
-    const apiKey = await this.databaseService.apiKey.findUnique({
-      where: { id: apiKeyId, userId },
+  async deleteApiKey(userId: bigint, apiKey: string) {
+    const apiKeyData = await this.databaseService.apiKey.findUnique({
+      where: { apiKey: apiKey, userId: userId },
     });
 
     if (apiKey == null) {
@@ -37,11 +37,11 @@ export class KeyService {
     }
 
     await this.databaseService.student.deleteMany({
-      where: { apiKeyId: apiKeyId },
+      where: { apiKeyId: apiKeyData.id },
     });
 
     await this.databaseService.apiKey.delete({
-      where: { id: apiKeyId, userId: userId },
+      where: { id: apiKeyData.id, userId: userId },
     });
   }
 }
